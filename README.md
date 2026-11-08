@@ -6,98 +6,101 @@
   <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — multi-platform public social footprint and behavioral insight for security, brand protection, and privacy self-audits" width="100%">
 </p>
 
-**Turn one username into a wider public social footprint—and an evidence-backed
-picture of how that person shows up online.**
+**One username. A more complete public social footprint.**
 
 [![CI](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Runtime dependencies: 0](https://img.shields.io/badge/runtime_dependencies-0-brightgreen.svg)](#requirements)
 
-Sherlock Skill is for people who need the bigger picture behind a username:
-security researchers, brand-protection teams, privacy-conscious individuals,
-and teams building AI agents. It scans public social, video, community, creator,
-marketplace, and developer platforms, follows distinctive clues through bounded
-discovery rounds, and connects only the accounts supported by evidence.
+Sherlock Skill helps you see the person behind a username. Start with one
+handle, discover as many public accounts as possible across social, video,
+community, creative, marketplace, and developer platforms, then connect only
+the profiles supported by evidence.
+
+The result is not another list of matching links. It is a source-backed view of
+public interests, communities, activity patterns, possible account connections,
+and the information that still cannot be confirmed.
+
+Public-source, authorized research only.
+
+## What you get
+
+- **A wider public account map:** one search can surface profiles across
+  different kinds of communities, not only developer or gaming sites.
+- **Clearer account connections:** see which profiles have enough evidence to
+  belong together, which are only possible matches, and which remain
+  unconfirmed.
+- **A public behavior profile:** summarize recurring interests, communities,
+  projects, content style, and activity rhythm without turning inference into
+  fact.
+- **A reviewable evidence trail:** every material claim keeps its source,
+  access date, confidence, and coverage limitation.
+
+This does not guarantee exhaustive coverage. Private, login-gated, deleted,
+blocked, unindexed, or differently named accounts may remain undiscovered.
 
 ## Who it is for
 
-| User | What they need | What Sherlock Skill provides |
-|---|---|---|
-| Security researchers | A wider public footprint without drowning in raw matches | Cross-platform account discovery, evidence-checked connections, and source-backed behavioral patterns |
-| Brand-protection teams | A faster way to find linked impersonation or lookalike profiles | Related public accounts, identity signals, contradictions, and a reviewable report |
-| Privacy-conscious individuals | A clear view of what their username exposes publicly | A self-audit of related profiles, visibility risks, and cleanup priorities |
-| Agent builders | A portable research workflow with predictable output | A zero-dependency scanner, JSON results, and a validated Markdown report |
+### Brand protection and trust teams
 
-Instead of stopping at **"does this handle appear on a site?"**, the workflow
-answers:
+Find public accounts that may be linked to impersonation, lookalike profiles, or
+brand misuse. Compare identity signals, keep contradictory evidence, and produce
+a report another reviewer can follow.
 
-> What public social accounts can this person be connected to, which profiles
-> actually belong together, and what do their interests, communities, and
-> activity patterns say about their public behavior?
+### Security researchers and investigators
 
-**Coverage note:** the goal is to find as many publicly discoverable accounts as
-possible, not to guarantee exhaustive coverage. Private, login-gated, deleted,
-blocked, unindexed, or differently named accounts may remain undiscovered.
+Start with a single handle, widen public coverage, and reduce the risk of
+treating unrelated same-name accounts as one person.
 
-## What the behavioral profile covers
+### Personal privacy self-audit
 
-- a cross-platform public social account map, including aliases and unassigned
-  candidates
-- recurring interests, topics, projects, roles, and public communities
-- platform-use patterns and public activity cadence
-- cross-platform consistency, contradictions, and identity-bearing links
-- evidence confidence, source dates, coverage gaps, and login-required unknowns
+See where your own username exposes public accounts and identifying details.
+Use the report to identify over-sharing, account sprawl, and cleanup priorities.
 
-The profile is limited to purpose-relevant public observations. It is not a
-psychological diagnosis, legal identity, or justification for sensitive
-inference beyond the authorized scope.
+Building an agent or internal research tool? The same workflow is available
+through a portable CLI and machine-readable outputs; see
+[Agent and developer integration](#agent-and-developer-integration).
 
-## Overview
+## A typical investigation
 
-Username scanners produce useful discovery signals, but a list of matching URLs
-is not an investigation. Pages may be false positives, stale, private, blocked,
-or controlled by different people.
+1. **Start with a username.** Optionally provide an alias, target site list, or
+   approved research question.
+2. **Find public profiles.** Run the bundled scanner and follow distinctive
+   public clues through a limited number of additional discovery checks.
+3. **Separate discovery from identity.** Review each candidate and decide
+   whether evidence supports connecting it to the same person.
+4. **Summarize the public picture.** Group recurring interests, communities,
+   roles, projects, and activity patterns with confidence labels.
+5. **Keep the unknowns visible.** Document blocked pages, contradictions,
+   stale evidence, and information that requires login or account-owner
+   verification.
 
-Sherlock Skill adds the parts needed for repeatable public-source work:
+## Use with an agent
 
-- clear separation between observed facts and inferences
-- evidence tiers and confidence levels
-- bounded follow-up searches from distinctive public clues
-- behavioral synthesis from public interests, communities, projects, and activity
-  patterns
-- explicit handling of contradictions, dead ends, and access failures
-- privacy minimization and data-disclosure limits
-- a consistent Markdown report plus machine-readable evidence
-- validation for incomplete reports and unresolved scaffolding
+The simplest way to use the project is to give an agent the repository path,
+the username, and the authorized purpose:
 
-The bundled scanner is implemented in this repository and does not require the
-external Sherlock command, `pipx`, an API key, or third-party Python packages.
+```text
+Read /path/to/sherlock-skill/SKILL.md. Research "example_user" for an authorized
+brand-impersonation review. Find public accounts, connect only those supported by
+evidence, summarize public interests and communities, complete the report, and
+run the validator.
+```
 
-## Features
+The agent should keep public discovery separate from identity evidence, avoid
+private or login-gated information, and leave ambiguous accounts unconfirmed.
 
-- **Agent-ready workflow:** `SKILL.md` defines the review and reporting process
-  for any coding agent that can read files and run Python.
-- **Bounded discovery:** follows distinctive public leads for at most two
-  derived rounds and 12 checks by default.
-- **Behavioral profile:** connects public account activity into a structured
-  view of interests, communities, projects, and recurring behavior while
-  retaining uncertainty and source evidence.
-- **Identity safeguards:** a shared username, display name, or search result
-  cannot establish same-person linkage by itself.
-- **Integrated reporting:** separates evidence-based clusters from unassigned
-  candidates and documents failed or blocked checks.
-- **Local execution:** the scanner uses only the Python standard library.
-- **Auditable outputs:** records source URLs, access dates, confidence, and
-  limitations alongside the report.
-
-## Getting started
+## Install and run locally
 
 ### Requirements
 
 - Python 3.10 or newer
 - Windows, macOS, or Linux
 - Network access to the sites being checked
+
+No external `sherlock` command, `pipx`, API key, or third-party Python package
+is required.
 
 ### Create an analysis case
 
@@ -110,7 +113,7 @@ python scripts/username_analysis.py collect \
   --workspace .
 ```
 
-The helper scans the bundled site list and creates:
+The helper scans the bundled 481-site snapshot and creates:
 
 ```text
 username_analysis/example_user/
@@ -121,14 +124,15 @@ username_analysis/example_user/
 └── sherlock-error.txt
 ```
 
-Use `--site` to restrict scope and `--timeout` to lower request pressure:
+You can limit the scan to relevant platforms:
 
 ```bash
 python scripts/username_analysis.py collect \
   --username example_user \
   --workspace . \
-  --site GitHub \
-  --site Gitee \
+  --site Instagram \
+  --site Reddit \
+  --site YouTube \
   --timeout 10
 ```
 
@@ -150,20 +154,18 @@ python scripts/username_analysis.py validate \
   username_analysis/example_user/username_analysis.md
 ```
 
-## Using it with an agent
+## Agent and developer integration
 
-Provide the skill path, investigation purpose, and scope:
+The repository is agent-neutral and self-contained:
 
-```text
-Read /path/to/sherlock-skill/SKILL.md. Research "example_user" for an authorized
-brand-impersonation review. Review all public candidates, follow distinctive
-public leads within the documented limits, complete the report, and run the
-validator.
-```
+- [`SKILL.md`](SKILL.md) contains the full research and reporting workflow.
+- [`AGENTS.md`](AGENTS.md) provides portable command-oriented instructions.
+- [`agent-manifest.json`](agent-manifest.json) describes entrypoints and output.
+- JSON scan output and the Markdown report are designed for downstream agents,
+  review tools, and internal dashboards.
 
-The agent is instructed to keep discovery evidence separate from identity
-evidence, avoid private or login-gated information, and leave ambiguous accounts
-unassigned.
+The scanner uses only the Python standard library. It supports site filtering,
+bounded concurrency, HTTP/HTTPS proxies, and machine-readable results.
 
 ## Evidence model
 
@@ -175,8 +177,8 @@ unassigned.
 | Unrelated | Evidence establishes distinct people or incompatible facts |
 | Inconclusive | Evidence is insufficient, inaccessible, stale, or ambiguous |
 
-Public page existence, search ranking, and scanner output are discovery signals,
-not proof of ownership. See
+A shared username, display name, or search ranking is a discovery signal, not
+proof of account ownership. See
 [identity-verification.md](references/identity-verification.md) for the full
 rubric and [pivot-discovery.md](references/pivot-discovery.md) for the bounded
 follow-up procedure.
@@ -193,9 +195,9 @@ not use it to bypass authentication, collect private data, steal credentials or
 sessions, harass or locate people, impersonate someone, or make high-impact
 eligibility decisions.
 
-Do not include credentials, private research data, or sensitive personal
-information in public issues. Publicly visible information can still be
-privacy-sensitive; the workflow favors minimum necessary detail.
+Publicly visible information can still be sensitive. Keep reports limited to the
+details needed for the authorized question, and do not publish credentials,
+private research data, or unnecessary personal information.
 
 ## Compatibility and limitations
 
@@ -203,10 +205,12 @@ privacy-sensitive; the workflow favors minimum necessary detail.
 - The scanner depends on public endpoints and may encounter CAPTCHAs, WAFs,
   rate limits, or client-side applications that cannot be read without a browser.
 - The bundled 481-site snapshot is reproducible but may be older than upstream
-  Sherlock. Record that limitation when current coverage matters.
+  Sherlock.
 - Scanner results are candidates, not verified account ownership.
-- The report validator checks structure, required conclusions, confidence, and
-  unresolved scaffolding; it cannot prove that the analysis is correct.
+- The validator checks structure, required conclusions, confidence, and
+  unresolved scaffolding; it cannot prove that an analysis is correct.
+- A behavior profile describes public activity; it is not a psychological
+  diagnosis or a substitute for consent-based verification.
 
 ## Development
 
@@ -233,4 +237,5 @@ documented public-source and privacy boundaries.
 
 This project is independently maintained and is not an official Sherlock
 Project release. It is available under the [MIT License](LICENSE). Third-party
-data and license notices are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+data and license notices are listed in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
