@@ -87,8 +87,6 @@ Agent 应把公开账号发现和身份确认分开，不访问私密或需要�
 - Windows、macOS 或 Linux
 - 可访问待调查站点的网络
 
-不需要外部 `sherlock` 命令、`pipx`、API Key 或第三方 Python 包。
-
 ### 创建调查案例
 
 ```bash

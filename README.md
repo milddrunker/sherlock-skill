@@ -99,9 +99,6 @@ private or login-gated information, and leave ambiguous accounts unconfirmed.
 - Windows, macOS, or Linux
 - Network access to the sites being checked
 
-No external `sherlock` command, `pipx`, API key, or third-party Python package
-is required.
-
 ### Create an analysis case
 
 ```bash
