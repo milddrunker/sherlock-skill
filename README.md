@@ -6,7 +6,9 @@
   <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — evidence-backed username research" width="100%">
 </p>
 
-**Turn username-search hits into an evidence-backed, reviewable report.**
+**Find as much of a person's publicly discoverable social footprint as
+possible, connect accounts with evidence, and turn public activity into an
+auditable behavioral profile.**
 
 [![CI](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
@@ -14,15 +16,35 @@
 [![Runtime dependencies: 0](https://img.shields.io/badge/runtime_dependencies-0-brightgreen.svg)](#requirements)
 
 Sherlock Skill is a public-source research workflow for security researchers,
-brand-protection teams, and AI agents. It combines a local username scanner with
-a structured process for candidate review, bounded lead discovery, identity
-verification, and report validation.
+brand-protection teams, and AI agents. Starting from one username, it scans a
+bundled 481-site snapshot across social, developer, creator, gaming, marketplace,
+and community platforms. It then follows distinctive public clues through
+bounded discovery rounds, verifies which accounts have evidence of belonging
+together, and synthesizes their public activity into a behavioral profile.
 
-Raw username search answers a narrow question: **does this handle appear on a
-site?** This project focuses on the harder question:
+Instead of stopping at **"does this handle appear on a site?"**, the workflow
+answers:
 
-> Are these profiles evidence of the same person, and how strong is that
-> evidence?
+> What publicly discoverable social media presence exists for this person,
+> which accounts can responsibly be grouped together, and what patterns do
+> their public activities reveal?
+
+**Coverage note:** the goal is to find as many publicly discoverable accounts as
+possible, not to guarantee exhaustive coverage. Private, login-gated, deleted,
+blocked, unindexed, or differently named accounts may remain undiscovered.
+
+## What the behavioral profile covers
+
+- a cross-platform public social account map, including aliases and unassigned
+  candidates
+- recurring interests, topics, projects, roles, and public communities
+- platform-use patterns and public activity cadence
+- cross-platform consistency, contradictions, and identity-bearing links
+- evidence confidence, source dates, coverage gaps, and login-required unknowns
+
+The profile is limited to purpose-relevant public observations. It is not a
+psychological diagnosis, legal identity, or justification for sensitive
+inference beyond the authorized scope.
 
 ## Overview
 
@@ -35,6 +57,8 @@ Sherlock Skill adds the parts needed for repeatable public-source work:
 - clear separation between observed facts and inferences
 - evidence tiers and confidence levels
 - bounded follow-up searches from distinctive public clues
+- behavioral synthesis from public interests, communities, projects, and activity
+  patterns
 - explicit handling of contradictions, dead ends, and access failures
 - privacy minimization and data-disclosure limits
 - a consistent Markdown report plus machine-readable evidence
@@ -49,6 +73,9 @@ external Sherlock command, `pipx`, an API key, or third-party Python packages.
   for any coding agent that can read files and run Python.
 - **Bounded discovery:** follows distinctive public leads for at most two
   derived rounds and 12 checks by default.
+- **Behavioral profile:** connects public account activity into a structured
+  view of interests, communities, projects, and recurring behavior while
+  retaining uncertainty and source evidence.
 - **Identity safeguards:** a shared username, display name, or search result
   cannot establish same-person linkage by itself.
 - **Integrated reporting:** separates evidence-based clusters from unassigned

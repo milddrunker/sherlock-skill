@@ -1,14 +1,14 @@
 ---
 name: sherlock-skill
-description: Investigate a username across public sites, follow distinctive public clues in bounded pivot rounds, verify whether accounts belong to the same person, and generate an integrated workspace report. Use for authorized public-source research; never for login bypass, private-data collection, harassment, or impersonation.
+description: Discover as many publicly visible social accounts as possible from a username, follow distinctive clues in bounded pivot rounds, verify same-person clusters, and build an evidence-based behavioral profile and report. Use for authorized public-source research; never for login bypass, private-data collection, harassment, or impersonation.
 ---
 
 # Sherlock Skill
 
-Turn a username into an evidence-backed public-account map. When a reviewed
-profile exposes a distinctive public clue, follow that clue through bounded
-pivot rounds, then integrate all candidates without treating same-name accounts
-as the same person.
+Turn a username into an evidence-backed map of a person's publicly discoverable
+social footprint and behavioral profile. When a reviewed profile exposes a
+distinctive public clue, follow that clue through bounded pivot rounds, then
+integrate all candidates without treating same-name accounts as the same person.
 
 This skill is portable across agent hosts: instructions are in this file and
 [`AGENTS.md`](AGENTS.md), while [`agent-manifest.json`](agent-manifest.json)

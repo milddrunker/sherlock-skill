@@ -1,7 +1,7 @@
 {
   "name": "sherlock-skill",
   "version": "0.4.1",
-  "description": "Agent-neutral public username discovery with bounded pivot rounds, account linkage verification, and integrated report generation.",
+  "description": "Agent-neutral public social-footprint discovery, account linkage verification, behavioral profiling, and integrated report generation.",
   "instructions": {
     "skill": "SKILL.md",
     "agents": "AGENTS.md",
