@@ -2,114 +2,97 @@
 
 # Sherlock Skill
 
-一个把用户名搜索整理成**有证据、可复核的公开账号地图**的 agent skill。它内置
-仅依赖 Python 标准库的扫描器，并附带来自
-[Sherlock](https://github.com/sherlock-project/sherlock) 的站点快照，再引导 agent
-先复核候选，再从独特的公开线索进行有边界的后续搜索、交叉核验，最后整合并在
-工作区生成结构化报告。
+**把用户名搜索线索整理成有证据、可复核的调查报告。**
 
-它刻意区分两件事：
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Runtime dependencies: 0](https://img.shields.io/badge/runtime_dependencies-0-brightgreen.svg)](#前置条件)
 
-```text
-账号存在  !=  这些账号属于同一个人
-```
+Sherlock Skill 面向安全研究人员、品牌保护团队和 AI Agent，提供一套公开信息
+调查工作流。它内置用户名扫描器，并规范候选复核、有限线索发现、身份关联判断和
+报告校验。
 
-Sherlock 提供发现线索；本 skill 增加证据分级、置信度、矛盾处理、隐私最小化和
-统一报告格式。
+普通用户名扫描只能回答“这个账号名是否出现在某个站点”；本项目进一步处理：
 
-## 生成内容
+> 这些账号之间是否有证据支持同一人判断，证据强度如何？
 
-```text
-username_analysis/
-└── <安全化后的用户名>/
-    ├── username_analysis.md
-    ├── evidence.json
-    ├── sherlock-scan.json
-    ├── sherlock-output.txt
-    └── sherlock-error.txt
-```
+## 项目说明
 
-Markdown 报告包括：
+用户名扫描器能够提供有效线索，但匹配到的 URL 列表并不等于完整调查。页面可能
+属于其他人、已经过期、处于私密状态、被平台拦截，或由不同的人控制。
 
-- 调查目的、授权依据与范围
-- 候选账号 URL 和公开可查事实
-- 后续追查线索、搜索轮次、死路和覆盖结果
-- 证据等级和跨平台比对
-- 证据支持的账号簇与未归属候选整合表
-- `Confirmed` / `Likely` / `Possible` / `Unrelated` / `Inconclusive` 身份判断
-- 与调查目的相匹配的公开画像摘要
-- 身份与公开活动时间线
-- 必须登录或在授权情况下才能确认的信息类别，以及合法确认途径
-- 来源、访问日期、限制与后续步骤
+本项目补充了可重复公开信息调查所需的能力：
 
-所有面向用户的可读输出默认使用英文，包括生成的报告、证据摘要、建议、限制说明和
-解释性状态文本。skill 不会因为用户名或被查看的来源使用其他语言就自动切换语言。
-应保留账号名、URL、来源标题和精确引述，并在英文分析中翻译或转述非英文材料。如果
-请求本身或对话使用非英文，并不会改变文档语言；只有直接指定生成文档语言的指令才会
-改变默认值。如果请求者明确指定其他语言，则使用该语言撰写报告正文，并在报告中记录
-这一选择。
+- 明确区分可观察事实与推断
+- 使用证据等级和置信度表达结论
+- 仅从有辨识度的公开线索开展有限轮次追踪
+- 记录矛盾、死路和访问失败，而不是只保留有利结果
+- 遵循隐私最小化原则，限制敏感信息输出
+- 生成统一 Markdown 报告和机器可读证据
+- 校验未完成报告和未替换的模板内容
 
-## 适用范围
+仓库内置扫描器，不依赖外部 `sherlock` 命令、`pipx`、API Key 或第三方 Python
+包。
 
-可用于经授权的安全评估、个人账号整理、品牌冒用调查、合法尽职调查，以及已经取得
-当事人同意的研究。
+## 核心能力
 
-本 skill 不用于绕过登录、收集私密数据、窃取凭据或会话、骚扰、定位或联系他人、
-冒充身份，也不用于就业、信贷、住房等高风险资格决策。公开可见的信息仍可能敏感，
-因此报告遵循最小化原则，并明确区分事实与推断。
+- **适配 Agent 工作流：** `SKILL.md` 定义了可供任意 Agent 读取和执行的复核与
+  报告流程。
+- **有限线索追踪：** 默认最多增加两轮衍生搜索和 12 次线索检查。
+- **身份关联约束：** 相同用户名、显示名或搜索结果本身不能证明账号属于同一人。
+- **整合式报告：** 区分有证据支持的账号簇与未归属候选，并保留失败和被拦截的
+  检查。
+- **本地执行：** 扫描器仅使用 Python 标准库。
+- **结果可审计：** 报告同时记录来源 URL、访问日期、置信度和调查限制。
 
-## 前置条件
+## 快速开始
+
+### 前置条件
 
 - Python 3.10 或更高版本
-- 能执行 CLI 或读取 `SKILL.md` / `AGENTS.md` 的任意 agent
-- 可访问目标站点的网络
+- Windows、macOS 或 Linux
+- 可访问待调查站点的网络
 
-不需要通过 `pipx` 或外部命令安装 Sherlock。验证内置站点快照：
-
-```bash
-python scripts/sherlock_scan.py validate-data
-```
-
-访问目标站点时仍可能需要网络或代理。内置的 481 个站点列表可以复现调查，但可能
-旧于上游 Sherlock；如果需要最新站点覆盖，应在报告中记录这一限制。
-
-## 安装 skill
-
-仓库可以克隆到任意位置，不需要安装任何 Python 包。
-
-PowerShell：
-
-```powershell
-$target = Join-Path $HOME 'sherlock-skill'
-git clone https://github.com/milddrunker/sherlock-skill.git $target
-```
-
-macOS 或 Linux：
+### 创建调查案例
 
 ```bash
-git clone https://github.com/milddrunker/sherlock-skill.git \
-  "$HOME/sherlock-skill"
+git clone https://github.com/milddrunker/sherlock-skill.git
+cd sherlock-skill
+
+python scripts/username_analysis.py collect \
+  --username example_user \
+  --workspace .
 ```
 
-支持 skill 的宿主可以把该目录放入或链接到自己的 skills 目录，并读取
-`SKILL.md`。命令驱动的 agent 可以读取 `AGENTS.md` 或
-`agent-manifest.json`。两种集成方式都不影响 CLI 独立运行。
-
-## 配合任意 agent 使用
-
-把仓库路径交给 agent，并说明调查目的和授权范围：
+工具会扫描内置站点列表，并创建：
 
 ```text
-读取 /path/to/sherlock-skill/SKILL.md，使用其中的内置扫描器调查用户名
-"example_user"，用于经授权的品牌冒用分析，并在当前工作区生成报告。
+username_analysis/example_user/
+├── username_analysis.md
+├── evidence.json
+├── sherlock-scan.json
+├── sherlock-output.txt
+└── sherlock-error.txt
 ```
 
-Agent 会运行本地扫描器，查看公开页面；如果发现独特公开线索，会在有限轮次内继续
-追查，然后核验账号关联、整合结果、完成报告并运行校验器。
+可使用 `--site` 限制调查范围，使用 `--timeout` 降低请求压力：
 
-## 直接使用辅助脚本
+```bash
+python scripts/username_analysis.py collect \
+  --username example_user \
+  --workspace . \
+  --site GitHub \
+  --site Gitee \
+  --timeout 10
+```
 
-直接运行内置扫描器：
+代理、并发数、NSFW 站点和覆盖已有目录等选项可通过以下命令查看：
+
+```bash
+python scripts/username_analysis.py collect --help
+```
+
+### 仅运行扫描器
 
 ```bash
 python scripts/sherlock_scan.py scan \
@@ -117,62 +100,84 @@ python scripts/sherlock_scan.py scan \
   --output username_analysis/example_user/scan.json
 ```
 
-创建调查目录：
-
-```bash
-python scripts/username_analysis.py collect \
-  --username example_user \
-  --workspace .
-```
-
-如果已经保存了兼容扫描器的输出：
-
-```bash
-python scripts/username_analysis.py collect \
-  --username example_user \
-  --workspace . \
-  --from-output sherlock-output.txt
-```
-
-校验完成后的报告：
+### 校验完成的报告
 
 ```bash
 python scripts/username_analysis.py validate \
   username_analysis/example_user/username_analysis.md
 ```
 
-查看代理、超时、站点限制和覆盖已有目录等选项：
+## 配合 Agent 使用
 
-```bash
-python scripts/username_analysis.py collect --help
+向 Agent 提供 skill 路径、调查目的和范围：
+
+```text
+读取 /path/to/sherlock-skill/SKILL.md。调查用户名 "example_user"，用于经授权的
+品牌冒用分析。复核所有公开候选，在规则允许的范围内追查独特公开线索，完成报告并
+运行校验器。
 ```
 
-运行仓库测试：
+Agent 需要区分发现线索和身份证据，避免收集私密或需要登录的信息，并保留归属
+不明的候选。
+
+## 证据标准
+
+| 结论 | 最低标准 |
+|---|---|
+| Confirmed | 账号本人直接公开声明或双向链接直接且唯一地关联账号 |
+| Likely | 至少两个独立、具有辨识度的重合信号，且没有实质矛盾 |
+| Possible | 一个弱到中等强度信号，且没有矛盾 |
+| Unrelated | 有证据表明属于不同人或存在互不兼容的事实 |
+| Inconclusive | 证据不足、无法访问、已经过期或仍有歧义 |
+
+页面存在、搜索排名和扫描器输出都只是发现信号，不能证明账号所有权。完整标准见
+[identity-verification.md](references/identity-verification.md)，有限追踪流程见
+[pivot-discovery.md](references/pivot-discovery.md)。
+
+## 安全与隐私
+
+仅在有合法依据和适当授权范围时使用本项目开展公开信息调查。典型用途包括经授权的
+安全评估、个人账号整理、品牌冒用调查、合法尽职调查，以及取得当事人同意的研究。
+
+本项目不是人员定位工具，也不能确认法律身份。不得用于绕过身份验证、收集私密数据、
+窃取凭据或会话、骚扰或定位他人、冒充身份，或作出就业、信贷、住房等高风险资格
+决定。
+
+请勿在公开 Issue 中提交凭据、私密调查数据或敏感个人信息。公开可见的信息仍可能
+涉及隐私，本项目要求只保留调查所需的最少事实。
+
+## 兼容性与限制
+
+- 需要 Python 3.10 或更高版本。
+- 扫描依赖公开端点，可能遇到 CAPTCHA、WAF、限流，或只能通过浏览器读取的客户端
+  页面。
+- 内置的 481 个站点快照可以复现调查，但可能旧于上游 Sherlock；需要最新覆盖时
+  应在报告中记录这一限制。
+- 扫描结果只是候选账号，不代表已经确认账号所有权。
+- 报告校验器检查结构、必填结论、置信度和未完成模板；通过校验不等于分析结论一定
+  正确。
+
+## 开发
+
+运行测试并验证内置站点数据：
 
 ```bash
 python -m unittest discover -s tests -v
+python scripts/sherlock_scan.py validate-data
 ```
 
-## 证据规则
+欢迎提交范围明确的 Bug 报告和 Pull Request。所有改动都应遵守公开信息与隐私边界。
 
-- 仅有相同用户名属于弱证据。
-- 显示名、项目名、公开链接或搜索结果只是追查线索，不是身份证明。
-- 要判断为 `Likely` 同一人，至少需要两个独立且具有辨识度的重合信号，并且没有
-  明显矛盾。
-- 不能把弱线索通过“传递关系”自动合并成同一人；归属不明的账号应留在未分配组。
-- 页面存在、搜索排名和 Sherlock 输出都不能证明账号所有权。
-- 页面被拦截、信息过期、账号私密或需要登录时，应记录为限制，不能当成否定结果。
-- 登录后才能确认的信息只按类别说明，并给出合法确认途径。skill 不会要求密码、
-  Cookie、恢复代码或一次性验证码。
+## 文档
 
-完整的置信度标准和披露规则见
-[references/identity-verification.md](references/identity-verification.md)，
-有限的后续搜索流程见
-[references/pivot-discovery.md](references/pivot-discovery.md)。
+- [Agent 工作流](SKILL.md)
+- [跨宿主命令接口](AGENTS.md)
+- [程序化清单](agent-manifest.json)
+- [身份核验规则](references/identity-verification.md)
+- [有限线索追踪](references/pivot-discovery.md)
 
-## 归属与许可证
+## 许可证
 
-本项目独立于 Sherlock 和 OSINTSearch。Sherlock 是由 Siddharth Dushantha 及贡献者
-维护的独立 MIT 开源项目。
-
-本仓库采用 [MIT License](LICENSE)。
+本项目独立维护，不是 Sherlock Project 的官方发布版本。本项目采用
+[MIT License](LICENSE)。第三方数据及许可证声明见
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
