@@ -1,6 +1,6 @@
 ---
 name: sherlock-skill
-description: Investigate a username across public sites with Sherlock, verify whether accounts belong to the same person, and generate a workspace report. Use for authorized public-source research; never for login bypass, private-data collection, harassment, or impersonation.
+description: Investigate a username across public sites with a bundled scanner and Sherlock site snapshot, verify whether accounts belong to the same person, and generate a workspace report. Use for authorized public-source research; never for login bypass, private-data collection, harassment, or impersonation.
 ---
 
 # Sherlock Skill
@@ -33,7 +33,7 @@ partial, and record assumptions instead of inventing authorization.
 
 ## Workflow
 
-1. Create the case and run Sherlock:
+1. Create the case and run the embedded scanner:
 
    ```bash
    python <skill-dir>/scripts/username_analysis.py collect \
@@ -41,14 +41,10 @@ partial, and record assumptions instead of inventing authorization.
      --workspace <workspace-root>
    ```
 
-   Use `--from-output <captured-output>` when Sherlock output already exists.
-   Use `--timeout 10` to limit slow sites. If the command is unavailable, show
-   the installation error and ask before changing the environment.
-
-   The helper passes `--local` to Sherlock so a failed GitHub data-file fetch
-   does not block collection. Its site database may be older than upstream.
-   Record that limitation when fresh site coverage matters; an operator can
-   rerun Sherlock without `--local` after confirming network access.
+   Use `--from-output <captured-output>` when compatible output already exists.
+   Use `--timeout 10` to limit slow sites. No `pipx` or external `sherlock`
+   executable is required. The bundled 481-site snapshot may be older than
+   upstream; record that limitation when fresh coverage matters.
 
    The helper creates:
 
@@ -56,6 +52,7 @@ partial, and record assumptions instead of inventing authorization.
    username_analysis/<safe-username>/
    |-- username_analysis.md
    |-- evidence.json
+   |-- sherlock-scan.json
    |-- sherlock-output.txt
    `-- sherlock-error.txt
    ```

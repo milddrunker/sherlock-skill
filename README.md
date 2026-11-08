@@ -2,10 +2,11 @@
 
 # Sherlock Skill
 
-A Codex skill that turns a username search into an evidence-backed public
-account map. It uses [Sherlock](https://github.com/sherlock-project/sherlock) to
-find candidate profiles, then guides the agent through cross-platform
-verification and preparation of a workspace report.
+An agent skill that turns a username search into an evidence-backed public
+account map. It includes a standard-library scanner and a bundled site snapshot
+from [Sherlock](https://github.com/sherlock-project/sherlock), then guides the
+agent through cross-platform verification and preparation of a workspace
+report.
 
 The key distinction is intentional:
 
@@ -24,6 +25,7 @@ username_analysis/
 └── <safe-username>/
     ├── username_analysis.md
     ├── evidence.json
+    ├── sherlock-scan.json
     ├── sherlock-output.txt
     └── sherlock-error.txt
 ```
@@ -57,26 +59,17 @@ inferences.
 
 - Codex with skills enabled
 - Python 3.10 or newer
-- `sherlock-project` available on `PATH`
 
-Install Sherlock with pipx:
-
-```bash
-pipx install sherlock-project
-```
-
-Test it:
+No `pipx` or external `sherlock` installation is required. Validate the bundled
+site snapshot:
 
 ```bash
-sherlock --version
+python scripts/sherlock_scan.py validate-data
 ```
 
-Network access and a local proxy may be required for GitHub-hosted Sherlock
-data or blocked target sites.
-
-The helper passes `--local` so a failed GitHub data-file fetch does not block
-collection. The local site list may be older; record that limitation when
-fresh coverage matters.
+Network access or a proxy may still be needed for target sites. The bundled
+481-site list is reproducible but may be older than upstream Sherlock; record
+that limitation when fresh coverage matters.
 
 ## Install the skill
 
@@ -107,10 +100,18 @@ Use $sherlock-skill to research the username "example_user" for an
 authorized brand-impersonation review. Create the report in this workspace.
 ```
 
-Codex will collect Sherlock candidates, inspect public pages, verify linkage,
+Codex will run the embedded scanner, inspect public pages, verify linkage,
 complete the report, and run the validator.
 
 ## Use the helper directly
+
+Run the bundled scanner directly:
+
+```bash
+python scripts/sherlock_scan.py scan \
+  --username example_user \
+  --output username_analysis/example_user/scan.json
+```
 
 Create a case:
 
@@ -120,16 +121,7 @@ python scripts/username_analysis.py collect \
   --workspace .
 ```
 
-If Sherlock is not on `PATH`, provide its executable:
-
-```bash
-python scripts/username_analysis.py collect \
-  --username example_user \
-  --workspace . \
-  --sherlock-command /path/to/sherlock
-```
-
-If you already saved Sherlock output:
+If you already saved compatible scanner output:
 
 ```bash
 python scripts/username_analysis.py collect \

@@ -2,9 +2,10 @@
 
 # Sherlock Skill
 
-一个把用户名搜索整理成**有证据、可复核的公开账号地图**的 Codex skill。它使用
-[Sherlock](https://github.com/sherlock-project/sherlock) 发现候选账号，再引导
-Codex 交叉核验，并在工作区生成结构化报告。
+一个把用户名搜索整理成**有证据、可复核的公开账号地图**的 agent skill。它内置
+仅依赖 Python 标准库的扫描器，并附带来自
+[Sherlock](https://github.com/sherlock-project/sherlock) 的站点快照，再引导 agent
+交叉核验，并在工作区生成结构化报告。
 
 它刻意区分两件事：
 
@@ -22,6 +23,7 @@ username_analysis/
 └── <安全化后的用户名>/
     ├── username_analysis.md
     ├── evidence.json
+    ├── sherlock-scan.json
     ├── sherlock-output.txt
     └── sherlock-error.txt
 ```
@@ -52,24 +54,15 @@ skill 指令和默认报告语言均为英文。
 
 - 已启用 skills 的 Codex
 - Python 3.10 或更高版本
-- `sherlock-project` 已加入 `PATH`
 
-使用 pipx 安装 Sherlock：
-
-```bash
-pipx install sherlock-project
-```
-
-验证：
+不需要通过 `pipx` 或外部命令安装 Sherlock。验证内置站点快照：
 
 ```bash
-sherlock --version
+python scripts/sherlock_scan.py validate-data
 ```
 
-访问 GitHub 托管的 Sherlock 数据或被限制的站点时，可能需要网络代理。
-
-辅助脚本会向 Sherlock 传入 `--local`，避免 GitHub 数据文件获取失败阻断调查。
-本地站点列表可能不是最新版本；如果需要最新站点覆盖，应在报告中记录这一限制。
+访问目标站点时仍可能需要网络或代理。内置的 481 个站点列表可以复现调查，但可能
+旧于上游 Sherlock；如果需要最新站点覆盖，应在报告中记录这一限制。
 
 ## 安装 skill
 
@@ -100,10 +93,18 @@ git clone https://github.com/milddrunker/sherlock-skill.git \
 分析，并在当前工作区生成报告。
 ```
 
-Codex 会调用 Sherlock 收集候选账号，查看公开页面，核验账号关联，完成报告并运行
+Codex 会运行内置扫描器，查看公开页面，核验账号关联，完成报告并运行
 校验器。
 
 ## 直接使用辅助脚本
+
+直接运行内置扫描器：
+
+```bash
+python scripts/sherlock_scan.py scan \
+  --username example_user \
+  --output username_analysis/example_user/scan.json
+```
 
 创建调查目录：
 
@@ -113,16 +114,7 @@ python scripts/username_analysis.py collect \
   --workspace .
 ```
 
-如果 Sherlock 不在 `PATH` 中，可以指定可执行文件：
-
-```bash
-python scripts/username_analysis.py collect \
-  --username example_user \
-  --workspace . \
-  --sherlock-command /path/to/sherlock
-```
-
-如果已经保存了 Sherlock 输出：
+如果已经保存了兼容扫描器的输出：
 
 ```bash
 python scripts/username_analysis.py collect \

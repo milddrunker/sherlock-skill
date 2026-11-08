@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
-"""Collect Sherlock results and scaffold a public-source username report."""
+"""Run the embedded username scanner and scaffold a public-source report."""
 
 from __future__ import annotations
 
 import argparse
 import hashlib
-import importlib.util
 import json
-import os
 import re
-import shutil
-import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+import sherlock_scan
 
 
 ANSI_RE = re.compile(r"\x1b(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
@@ -85,67 +87,50 @@ def parse_findings(output: str) -> list[dict[str, str]]:
     return findings
 
 
-def resolve_sherlock(explicit: str | None) -> list[str]:
-    if explicit:
-        resolved = shutil.which(explicit) or explicit
-        if not Path(resolved).is_file():
-            raise AnalysisError(f"Sherlock executable not found: {explicit}")
-        return [resolved]
-
-    executable = shutil.which("sherlock")
-    if executable:
-        return [executable]
-
-    if importlib.util.find_spec("sherlock_project.sherlock") is not None:
-        code = (
-            "from sherlock_project.sherlock import main; "
-            "raise SystemExit(main())"
-        )
-        return [sys.executable, "-c", code]
-
-    raise AnalysisError(
-        "Sherlock is not on PATH. Install it with "
-        "`pipx install sherlock-project`, pass `--sherlock-command`, "
-        "or use `--from-output` with an existing capture."
-    )
-
-
-def run_sherlock(args: argparse.Namespace) -> tuple[str, str, int, list[str]]:
-    command = resolve_sherlock(args.sherlock_command)
-    invocation = command + [args.username, "--no-color", "--timeout", str(args.timeout)]
-    invocation.extend(["--local"])
-    if args.print_all:
-        invocation.append("--print-all")
-    else:
-        invocation.append("--print-found")
-    if args.proxy:
-        invocation.extend(["--proxy", args.proxy])
-    for site in args.site:
-        invocation.extend(["--site", site])
-
-    env = os.environ.copy()
-    env["NO_COLOR"] = "1"
-    env["PYTHONIOENCODING"] = "utf-8"
-
+def run_embedded_scan(args: argparse.Namespace) -> tuple[dict, list[dict[str, str]]]:
     try:
-        completed = subprocess.run(
-            invocation,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            env=env,
-            timeout=args.job_timeout,
-            check=False,
+        scan = sherlock_scan.scan_sites(
+            args.username,
+            site_names=args.site,
+            timeout=args.timeout,
+            workers=args.workers,
+            proxy=args.proxy,
+            include_nsfw=args.include_nsfw,
         )
-    except subprocess.TimeoutExpired as exc:
-        raise AnalysisError(
-            f"Sherlock exceeded the overall timeout ({args.job_timeout}s)."
-        ) from exc
-    except OSError as exc:
-        raise AnalysisError(f"Could not start Sherlock: {exc}") from exc
+    except sherlock_scan.ScanError as exc:
+        raise AnalysisError(str(exc)) from exc
 
-    return completed.stdout, completed.stderr, completed.returncode, invocation
+    findings = []
+    for result in scan["results"]:
+        if result["status"] != "claimed":
+            continue
+        findings.append(
+            {
+                "id": f"F{len(findings) + 1:03d}",
+                "site": result["site"],
+                "url": result["url"],
+                "http_status": result["http_status"],
+                "scan_reason": result["reason"],
+                "verification_status": "unreviewed",
+                "linkage": "unassessed",
+                "confidence": "unassessed",
+                "notes": "",
+            }
+        )
+    return scan, findings
+
+
+def render_scan_output(scan: dict, findings: list[dict[str, str]]) -> str:
+    lines = [f"[*] Checking username {scan['username']} on:"]
+    for finding in findings:
+        lines.append(f"[+] {finding['site']}: {finding['url']}")
+    summary = scan["summary"]
+    lines.append(
+        f"[*] Search completed with {len(findings)} results; "
+        f"{summary['unknown']} unknown, {summary['waf']} blocked, "
+        f"{summary['available']} not found."
+    )
+    return "\n".join(lines) + "\n"
 
 
 def markdown_escape(value: str) -> str:
@@ -182,39 +167,47 @@ def create_case(args: argparse.Namespace) -> Path:
         )
     case_dir.mkdir(parents=True, exist_ok=True)
 
+    scan = None
     if args.from_output:
         output_path = Path(args.from_output).expanduser().resolve()
         try:
             stdout = output_path.read_text(encoding="utf-8", errors="replace")
         except OSError as exc:
-            raise AnalysisError(f"Could not read Sherlock output: {exc}") from exc
+            raise AnalysisError(f"Could not read scanner output: {exc}") from exc
+        findings = parse_findings(stdout)
         stderr = ""
-        return_code = None
-        invocation = []
         source_mode = "provided-output"
     else:
-        stdout, stderr, return_code, invocation = run_sherlock(args)
-        source_mode = "sherlock"
+        scan, findings = run_embedded_scan(args)
+        stdout = render_scan_output(scan, findings)
+        stderr = ""
+        source_mode = "embedded"
 
-    findings = parse_findings(stdout)
     analyzed_at = utc_now()
 
     (case_dir / "sherlock-output.txt").write_text(stdout, encoding="utf-8")
     (case_dir / "sherlock-error.txt").write_text(stderr, encoding="utf-8")
+    if scan is not None:
+        (case_dir / "sherlock-scan.json").write_text(
+            json.dumps(scan, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
 
     evidence = {
         "schema_version": 1,
         "username": args.username,
         "analyzed_at": analyzed_at,
         "source_mode": source_mode,
-        "sherlock": {
-            "command": invocation,
-            "return_code": return_code,
+        "scanner": {
+            "engine": "embedded-python-stdlib" if scan else "provided-output",
+            "version": sherlock_scan.SCANNER_VERSION if scan else None,
             "timeout_seconds": args.timeout,
+            "workers": getattr(args, "workers", None),
             "sites": args.site,
             "proxy_configured": bool(args.proxy),
             "output_file": "sherlock-output.txt",
-            "error_file": "sherlock-error.txt",
+            "full_scan_file": "sherlock-scan.json" if scan else None,
+            "summary": scan["summary"] if scan else None,
         },
         "summary": {
             "candidate_count": len(findings),
@@ -249,10 +242,10 @@ def create_case(args: argparse.Namespace) -> Path:
     print(f"Created case directory: {case_dir}")
     print(f"Candidate accounts: {len(findings)}")
     print(f"Report scaffold: {report_path}")
-    if return_code not in (None, 0):
+    if scan and scan["summary"]["unknown"]:
         print(
-            f"Warning: Sherlock exited with code {return_code}; "
-            "review sherlock-error.txt before relying on the results.",
+            f"Warning: {scan['summary']['unknown']} sites returned unknown "
+            "results; review sherlock-scan.json before relying on coverage.",
             file=sys.stderr,
         )
     return report_path
@@ -316,7 +309,7 @@ def validate_report(report_path: Path) -> tuple[list[str], list[str]]:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Run Sherlock and scaffold a public-source username analysis report."
+        description="Run the embedded scanner and scaffold a public-source report."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -329,22 +322,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     collect.add_argument(
         "--from-output",
-        help="Parse an existing Sherlock stdout capture instead of running Sherlock.",
+        help="Parse an existing compatible scanner capture instead of scanning.",
     )
     collect.add_argument(
-        "--sherlock-command",
-        help="Path to the Sherlock executable. Defaults to PATH or an importable module.",
+        "--timeout", type=float, default=10, help="Per-site timeout in seconds."
     )
-    collect.add_argument("--timeout", type=int, default=10, help="Per-site timeout in seconds.")
     collect.add_argument(
-        "--job-timeout",
-        type=int,
-        default=1800,
-        help="Overall Sherlock timeout in seconds (default: 1800).",
+        "--workers", type=int, default=20, help="Concurrent requests (default: 20)."
     )
     collect.add_argument("--site", action="append", default=[], help="Limit to a site; repeatable.")
-    collect.add_argument("--proxy", help="Proxy URL passed through to Sherlock.")
-    collect.add_argument("--print-all", action="store_true", help="Capture not-found and error rows.")
+    collect.add_argument("--proxy", help="HTTP or HTTPS proxy URL.")
+    collect.add_argument(
+        "--include-nsfw", action="store_true", help="Include NSFW site definitions."
+    )
     collect.add_argument("--force", action="store_true", help="Replace an existing case directory.")
 
     validate = subparsers.add_parser("validate", help="Validate a completed report.")
