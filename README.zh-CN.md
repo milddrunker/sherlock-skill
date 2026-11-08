@@ -3,7 +3,7 @@
 # Sherlock Skill
 
 <p align="center">
-  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — 有证据支持的用户名调查" width="100%">
+  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — 公开社交媒体足迹、证据核验与行为画像" width="100%">
 </p>
 
 **从一个用户名出发，尽可能发现一个人的公开社交媒体足迹，用证据串联账号，

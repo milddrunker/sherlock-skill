@@ -3,7 +3,7 @@
 # Sherlock Skill
 
 <p align="center">
-  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — evidence-backed username research" width="100%">
+  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — public social footprint, evidence-checked connections, and behavioral profile" width="100%">
 </p>
 
 **Find as much of a person's publicly discoverable social footprint as
