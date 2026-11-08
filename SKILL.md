@@ -1,9 +1,9 @@
 ---
-name: username-analysis-skill
+name: sherlock-skill
 description: Investigate a username across public sites with Sherlock, verify whether accounts belong to the same person, and generate a workspace report. Use for authorized public-source research; never for login bypass, private-data collection, harassment, or impersonation.
 ---
 
-# Username Analysis
+# Sherlock Skill
 
 Turn a username into an evidence-backed public-account map without treating
 same-name accounts as the same person.

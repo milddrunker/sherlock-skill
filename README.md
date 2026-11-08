@@ -1,6 +1,6 @@
 **English** | [简体中文](README.zh-CN.md)
 
-# Username Analysis Skill
+# Sherlock Skill
 
 A Codex skill that turns a username search into an evidence-backed public
 account map. It uses [Sherlock](https://github.com/sherlock-project/sherlock) to
@@ -85,15 +85,15 @@ Clone this repository directly into your Codex skills directory.
 PowerShell:
 
 ```powershell
-$target = Join-Path $HOME '.codex\skills\username-analysis-skill'
-git clone https://github.com/milddrunker/username-analysis-skill.git $target
+$target = Join-Path $HOME '.codex\skills\sherlock-skill'
+git clone https://github.com/milddrunker/sherlock-skill.git $target
 ```
 
 macOS or Linux:
 
 ```bash
-git clone https://github.com/milddrunker/username-analysis-skill.git \
-  "${CODEX_HOME:-$HOME/.codex}/skills/username-analysis-skill"
+git clone https://github.com/milddrunker/sherlock-skill.git \
+  "${CODEX_HOME:-$HOME/.codex}/skills/sherlock-skill"
 ```
 
 Restart or refresh Codex if the skill is not discovered immediately.
@@ -103,7 +103,7 @@ Restart or refresh Codex if the skill is not discovered immediately.
 Invoke the skill by name and state the research purpose and scope:
 
 ```text
-Use $username-analysis-skill to research the username "example_user" for an
+Use $sherlock-skill to research the username "example_user" for an
 authorized brand-impersonation review. Create the report in this workspace.
 ```
 

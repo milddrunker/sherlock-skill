@@ -1,6 +1,6 @@
 [English](README.md) | **简体中文**
 
-# Username Analysis Skill
+# Sherlock Skill
 
 一个把用户名搜索整理成**有证据、可复核的公开账号地图**的 Codex skill。它使用
 [Sherlock](https://github.com/sherlock-project/sherlock) 发现候选账号，再引导
@@ -78,15 +78,15 @@ sherlock --version
 PowerShell：
 
 ```powershell
-$target = Join-Path $HOME '.codex\skills\username-analysis-skill'
-git clone https://github.com/milddrunker/username-analysis-skill.git $target
+$target = Join-Path $HOME '.codex\skills\sherlock-skill'
+git clone https://github.com/milddrunker/sherlock-skill.git $target
 ```
 
 macOS 或 Linux：
 
 ```bash
-git clone https://github.com/milddrunker/username-analysis-skill.git \
-  "${CODEX_HOME:-$HOME/.codex}/skills/username-analysis-skill"
+git clone https://github.com/milddrunker/sherlock-skill.git \
+  "${CODEX_HOME:-$HOME/.codex}/skills/sherlock-skill"
 ```
 
 如果 Codex 没有立即发现 skill，请重启或刷新 Codex。
@@ -96,7 +96,7 @@ git clone https://github.com/milddrunker/username-analysis-skill.git \
 调用时说明调查目的和授权范围：
 
 ```text
-使用 $username-analysis-skill 调查用户名 "example_user"，用于经授权的品牌冒用
+使用 $sherlock-skill 调查用户名 "example_user"，用于经授权的品牌冒用
 分析，并在当前工作区生成报告。
 ```
 
