@@ -193,6 +193,7 @@ documented public-source and privacy boundaries.
 - [Programmatic manifest](agent-manifest.json)
 - [Identity verification](references/identity-verification.md)
 - [Bounded pivot discovery](references/pivot-discovery.md)
+- [Project site](https://milddrunker.github.io/sherlock-skill/)
 
 ## License
 

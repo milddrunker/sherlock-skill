@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sherlock Skill — Evidence-backed username research</title>
+    <meta
+      name="description"
+      content="An agent-neutral public-source research workflow for turning username-search hits into evidence-backed, reviewable reports."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sherlock Skill">
+    <meta
+      property="og:description"
+      content="Evidence-backed username research for security researchers and AI agents."
+    >
+    <meta
+      property="og:image"
+      content="https://milddrunker.github.io/sherlock-skill/assets/social-preview.png"
+    >
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Sherlock Skill home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Sherlock Skill</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="https://github.com/milddrunker/sherlock-skill">GitHub</a>
+        <a href="https://github.com/milddrunker/sherlock-skill/blob/main/README.zh-CN.md">中文</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">PUBLIC-SOURCE RESEARCH FOR AI AGENTS</p>
+          <h1>Username search is discovery. Evidence is the product.</h1>
+          <p class="lede">
+            Sherlock Skill turns broad username hits into a structured,
+            reviewable investigation with explicit evidence tiers, bounded
+            follow-up searches, and honest coverage limits.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/milddrunker/sherlock-skill">
+              View on GitHub
+            </a>
+            <a class="button secondary" href="#quick-start">Quick start</a>
+          </div>
+          <p class="microcopy">
+            MIT licensed · Python 3.10+ · zero runtime dependencies
+          </p>
+        </div>
+
+        <figure class="product-preview">
+          <img
+            src="assets/social-preview.png"
+            width="1280"
+            height="640"
+            alt="Sherlock Skill report preview showing sources, evidence leads, blocked checks, and an inconclusive conclusion."
+          >
+          <figcaption>
+            The report keeps discovery signals separate from identity evidence.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="principle" aria-labelledby="principle-title">
+        <p class="eyebrow">THE CORE PRINCIPLE</p>
+        <h2 id="principle-title">
+          <span>account exists</span>
+          <span class="operator" aria-label="does not equal">≠</span>
+          <span>same person</span>
+        </h2>
+        <p>
+          Raw scanners can find matching handles. They cannot determine whether
+          profiles belong to one person, whether an account is abandoned, or
+          whether a public link is meaningful evidence.
+        </p>
+      </section>
+
+      <section class="features" aria-labelledby="features-title">
+        <div class="section-heading">
+          <p class="eyebrow">BUILT FOR REVIEWABLE WORK</p>
+          <h2 id="features-title">More than a list of matching URLs</h2>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <span class="feature-number">01</span>
+            <h3>Evidence tiers</h3>
+            <p>
+              Separate observations, weak overlaps, contradictions, and direct
+              linkage evidence with explicit confidence levels.
+            </p>
+          </article>
+          <article>
+            <span class="feature-number">02</span>
+            <h3>Bounded discovery</h3>
+            <p>
+              Follow distinctive public leads for at most two rounds and 12
+              checks by default, with every dead end recorded.
+            </p>
+          </article>
+          <article>
+            <span class="feature-number">03</span>
+            <h3>Auditable output</h3>
+            <p>
+              Generate a Markdown report plus machine-readable evidence,
+              source dates, limitations, and unresolved candidates.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="quick-start" id="quick-start" aria-labelledby="quick-start-title">
+        <div class="section-heading">
+          <p class="eyebrow">QUICK START</p>
+          <h2 id="quick-start-title">Run it locally in a few commands</h2>
+        </div>
+        <pre><code>git clone https://github.com/milddrunker/sherlock-skill.git
+cd sherlock-skill
+
+python scripts/username_analysis.py collect \
+  --username example_user \
+  --workspace .
+
+python scripts/username_analysis.py validate \
+  username_analysis/example_user/username_analysis.md</code></pre>
+        <p>
+          Ask any coding agent to read <code>SKILL.md</code> and complete the
+          review, or use the bundled scanner directly.
+        </p>
+      </section>
+
+      <section class="boundaries" aria-labelledby="boundaries-title">
+        <div>
+          <p class="eyebrow">DESIGNED WITH BOUNDARIES</p>
+          <h2 id="boundaries-title">Public-source research, not a people finder</h2>
+        </div>
+        <div class="boundary-copy">
+          <p>
+            Use the workflow only with a lawful basis and appropriate scope.
+            Sherlock Skill does not bypass authentication, collect private
+            data, confirm legal identity, or make high-impact eligibility
+            decisions.
+          </p>
+          <a class="text-link" href="https://github.com/milddrunker/sherlock-skill#safety-and-privacy">
+            Read the safety boundaries →
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Sherlock Skill</span>
+      <span>
+        <a href="https://github.com/milddrunker/sherlock-skill">GitHub</a>
+        ·
+        <a href="https://github.com/milddrunker/sherlock-skill/blob/main/LICENSE">MIT License</a>
+      </span>
+    </footer>
+  </body>
+</html>
