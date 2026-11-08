@@ -1,5 +1,13 @@
 # Username Analysis: {{USERNAME}}
 
+<!--
+Language contract: complete every human-readable section in English unless the
+requester explicitly chose another language. Preserve handles, URLs, source
+titles, and exact quoted labels; translate or paraphrase non-English material
+in the surrounding analysis. The request's language does not imply the
+document's language; only a direct instruction about the report changes it.
+-->
+
 > Generated: {{ANALYZED_AT}}
 >
 > Scope: Public-source research only. This report separates observed facts from
@@ -23,21 +31,53 @@
 
 Facts are sourced observations. Inferences are explicitly labeled interpretations.
 The same username alone is weak evidence. Access dates are recorded so stale
-results can be recognized.
+results can be recognized. A pivot can explain how a candidate was discovered,
+but it cannot serve as its own linkage evidence.
 
 ## Candidate Accounts
 
-Sherlock reported **{{FINDING_COUNT}}** candidate account URL(s).
+The initial Sherlock scan reported **{{FINDING_COUNT}}** candidate account
+URL(s). Keep this as the initial-scan count. If pivots discover new profiles,
+add them to the same table with distinct `P001`, `P002`, ... IDs and record their
+discovery round.
 
 | ID | Platform | Public URL | Page state | Relevant public facts | Source |
 |---|---|---|---|---|---|
 {{FINDINGS_TABLE}}
+
+## Iterative Discovery
+
+Distinctive public clues may be followed in bounded, read-only rounds. A lead
+is a discovery path, not proof that the source and discovered accounts belong
+to the same person. Record rejected and blocked checks as well as matches.
+
+### Pivot Leads
+
+| ID | Origin candidate | Public clue | Lead type | Why discriminating | Follow-up scope | Status | Source |
+|---|---|---|---|---|---|---|---|
+{{PIVOT_LEADS_TABLE}}
+
+### Search Rounds
+
+| Round | Seed or lead | Public check | New candidates or clues | Decision | Source |
+|---|---|---|---|---|---|
+{{PIVOT_ROUNDS_TABLE}}
 
 ## Cross-Platform Verification
 
 | Comparison | Signal | Evidence tier | Supports or contradicts | Notes |
 |---|---|---|---|---|
 {{CROSS_PLATFORM_TABLE}}
+
+## Integrated Account Map
+
+Only direct evidence can place accounts in a same-person cluster. Accounts that
+share only a handle, pivot clue, generic interest, or activity window remain
+unassigned.
+
+| Cluster or account | Member candidate IDs | Identity conclusion | Confidence | Decisive evidence | Contradictions and limits |
+|---|---|---|---|---|---|
+{{INTEGRATED_MAP_TABLE}}
 
 ## Identity Assessment
 

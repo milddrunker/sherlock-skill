@@ -5,8 +5,9 @@
 An agent skill that turns a username search into an evidence-backed public
 account map. It includes a standard-library scanner and a bundled site snapshot
 from [Sherlock](https://github.com/sherlock-project/sherlock), then guides the
-agent through cross-platform verification and preparation of a workspace
-report.
+agent through candidate review, bounded follow-up searches from distinctive
+public clues, cross-platform verification, and final integration into a
+workspace report.
 
 The key distinction is intentional:
 
@@ -34,14 +35,23 @@ The Markdown report includes:
 
 - scope and authorization
 - candidate account URLs and public facts
+- pivot leads, search rounds, dead ends, and coverage of follow-up checks
 - evidence tiers and cross-platform comparisons
+- an integrated map of evidence-based clusters and unassigned candidates
 - `Confirmed` / `Likely` / `Possible` / `Unrelated` / `Inconclusive` assessment
 - a purpose-limited public profile summary
 - identity and activity timeline
 - login-required information gaps with legitimate verification routes
 - sources, access dates, limitations, and next steps
 
-The default language for the skill instructions and generated report is English.
+All human-readable output defaults to English: the generated report, evidence
+summaries, recommendations, limitations, and explanatory status text. The skill
+does not infer language from the username or reviewed sources. Preserve handles,
+URLs, source titles, and exact quoted labels; translate or paraphrase non-English
+material in the surrounding analysis. A non-English request or conversation does
+not change artifact language; only a direct instruction about the generated
+document does. If the requester explicitly chooses another language, write the
+report prose in that language and record the choice.
 
 ## Safe scope
 
@@ -105,9 +115,10 @@ the username "example_user" for an authorized brand-impersonation review.
 Create the report in this workspace.
 ```
 
-The agent will run the local scanner, inspect public pages, verify linkage,
-complete the report, and run the validator. Hosts that support skill-name
-invocation can also expose the directory as `sherlock-skill`.
+The agent will run the local scanner, inspect public pages, follow distinctive
+public clues in bounded rounds when useful, verify linkage, integrate the
+results, complete the report, and run the validator. Hosts that support
+skill-name invocation can also expose the directory as `sherlock-skill`.
 
 ## Use the helper directly
 
@@ -155,8 +166,12 @@ python -m unittest discover -s tests -v
 ## Evidence rules
 
 - A shared username alone is weak evidence.
+- A display name, project, public link, or search result is a pivot lead, not
+  proof of identity.
 - A `Likely` same-person conclusion requires at least two independent,
   non-generic overlaps and no material contradiction.
+- Weak clues are not propagated transitively; ambiguous accounts remain
+  unassigned.
 - Public profile existence, search ranking, and Sherlock output do not establish
   ownership.
 - Blocked, stale, private, or login-gated pages are limitations, not negative
@@ -167,7 +182,9 @@ python -m unittest discover -s tests -v
 
 See
 [references/identity-verification.md](references/identity-verification.md)
-for the full confidence rubric and disclosure rules.
+for the full confidence rubric and disclosure rules, and
+[references/pivot-discovery.md](references/pivot-discovery.md) for the bounded
+follow-up search procedure.
 
 ## Attribution and license
 

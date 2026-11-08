@@ -11,6 +11,9 @@ key, or a separate Sherlock installation.
    runtime requirements.
 3. For command discovery, read
    [`agent-manifest.json`](agent-manifest.json).
+4. If a reviewed profile yields a distinctive public lead, read
+   [`references/pivot-discovery.md`](references/pivot-discovery.md) before
+   searching it.
 
 ## Commands
 
@@ -54,6 +57,16 @@ The scanner writes UTF-8 JSON to stdout and, when requested, to `--output`.
 Claimed accounts are under `results`; transport and WAF problems are summarized
 in `summary` and, for compact output, `issues`.
 
+All human-readable artifacts default to English, including the Markdown report,
+review summaries, inference notes, recommendations, limitations, and
+explanatory CLI text. Do not infer output language from the username or source
+content. Preserve handles, URLs, source titles, and exact quoted labels;
+translate or paraphrase non-English material in the surrounding English
+analysis. A non-English request or conversation does not change artifact
+language; only an explicit instruction about the generated document does.
+Conversational replies may use another language without affecting the artifact.
+Record any explicit requester language choice in the report.
+
 The report helper creates:
 
 ```text
@@ -65,6 +78,9 @@ username_analysis/<safe-username>/
 `-- sherlock-error.txt
 ```
 
+The case also records bounded discovery rounds, pivot leads, and integrated
+clusters in `evidence.json` and the generated report.
+
 ## Operating Rules
 
 - Public, lawful, and authorized research only.
@@ -74,5 +90,10 @@ username_analysis/<safe-username>/
 - Keep site volume and concurrency modest; respect platform rules and retry
   limits.
 - Record unknown, blocked, stale, and unavailable results as coverage limits.
-- Do not send the scanned username or report to a third-party service
-  automatically.
+- Record every followed public clue and why it stopped. New profiles remain
+  separate candidates until direct evidence supports a cluster.
+- Do not use generic personal names, private identifiers, breach data, or
+  login-gated information as pivots.
+- Do not upload the report, evidence bundle, or bulk source set to a third-party
+  service. Limited public queries for approved pivot leads are permitted and
+  must be logged in the case.

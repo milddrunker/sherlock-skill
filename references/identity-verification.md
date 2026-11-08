@@ -17,6 +17,21 @@ Assign each observation a source ID (`S1`, `S2`, ...) and classify it:
 Public page existence, search ranking, and Sherlock output are discovery
 signals, not proof of ownership.
 
+## Pivot clues and clusters
+
+A pivot clue can explain how a candidate was discovered, but it is not identity
+evidence by itself. When consolidating accounts:
+
+- Keep the source candidate and source ID that exposed each clue.
+- Treat a search result or newly discovered profile as a candidate, not a
+  confirmed match.
+- Require direct evidence for every account placed in a same-person cluster.
+- Do not apply transitive closure to weak evidence.
+- Leave accounts that share only a pivot clue, handle, generic interest, or
+  timing in the unassigned section.
+
+See [pivot-discovery.md](pivot-discovery.md) for the bounded search procedure.
+
 ## Conclusion rubric
 
 - **Confirmed**: Direct first-party or reciprocal public evidence uniquely
@@ -33,7 +48,7 @@ signals, not proof of ownership.
 
 State confidence as High, Medium, or Low and include the decisive evidence and
 the strongest contradiction. Never increase confidence solely because many
-copies of the same handle were found.
+copies of the same handle or many results from one pivot were found.
 
 ## Useful comparison fields
 
@@ -89,5 +104,7 @@ the information matters and who could lawfully confirm it.
 - Do not expose a private individual's contact path when the finding can be
   described without it.
 - Mention account-status uncertainty whenever a platform page is ambiguous.
+- Include how an account entered the investigation when that path affects how
+  much confidence a reader might place in it.
 - Retain only the sources needed to support conclusions, plus notes that future
   reviewers need to reproduce the assessment.

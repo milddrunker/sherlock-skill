@@ -27,7 +27,9 @@ REQUIRED_HEADINGS = (
     "## Scope and Authorization",
     "## Evidence Standard",
     "## Candidate Accounts",
+    "## Iterative Discovery",
     "## Cross-Platform Verification",
+    "## Integrated Account Map",
     "## Identity Assessment",
     "## Public Profile Summary",
     "## Login-Required Information Gaps",
@@ -194,7 +196,7 @@ def create_case(args: argparse.Namespace) -> Path:
         )
 
     evidence = {
-        "schema_version": 1,
+        "schema_version": 2,
         "username": args.username,
         "analyzed_at": analyzed_at,
         "source_mode": source_mode,
@@ -214,6 +216,27 @@ def create_case(args: argparse.Namespace) -> Path:
             "platforms": [finding["site"] for finding in findings],
         },
         "findings": findings,
+        "discovery": {
+            "strategy": "bounded_public_pivots",
+            "limits": {
+                "default_derived_rounds": 2,
+                "default_lead_checks": 12,
+            },
+            "rounds": [
+                {
+                    "round": 1,
+                    "seed_type": "username",
+                    "seed_value": args.username,
+                    "method": "embedded-site-scan" if scan else "provided-output",
+                    "status": "initialized",
+                    "outcome": "Initial candidates require review before extracting leads.",
+                    "sources": [],
+                }
+            ],
+            "candidates": [],
+            "leads": [],
+            "clusters": [],
+        },
         "identity_assessment": {
             "conclusion": "Inconclusive",
             "confidence": "Low",

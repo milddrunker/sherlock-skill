@@ -1,12 +1,14 @@
 ---
 name: sherlock-skill
-description: Investigate a username across public sites with a bundled scanner and Sherlock site snapshot, verify whether accounts belong to the same person, and generate a workspace report. Use for authorized public-source research; never for login bypass, private-data collection, harassment, or impersonation.
+description: Investigate a username across public sites, follow distinctive public clues in bounded pivot rounds, verify whether accounts belong to the same person, and generate an integrated workspace report. Use for authorized public-source research; never for login bypass, private-data collection, harassment, or impersonation.
 ---
 
 # Sherlock Skill
 
-Turn a username into an evidence-backed public-account map without treating
-same-name accounts as the same person.
+Turn a username into an evidence-backed public-account map. When a reviewed
+profile exposes a distinctive public clue, follow that clue through bounded
+pivot rounds, then integrate all candidates without treating same-name accounts
+as the same person.
 
 This skill is portable across agent hosts: instructions are in this file and
 [`AGENTS.md`](AGENTS.md), while [`agent-manifest.json`](agent-manifest.json)
@@ -31,10 +33,26 @@ Collect:
 - the exact username or approved aliases
 - the research purpose and authorization basis
 - any sites that are explicitly in or out of scope
-- whether the output should be English or another language
+- whether the requester explicitly chose a language other than the default
 
-The default report language is English. Create the case even when details are
-partial, and record assumptions instead of inventing authorization.
+## Output Language
+
+All human-readable output defaults to English, including the generated report,
+evidence summaries, recommendations, limitations, and explanatory status text.
+Do not switch language merely because the username or a reviewed source uses
+another language. Preserve handles, URLs, source titles, and exact quoted labels;
+translate or paraphrase non-English source material in the surrounding English
+analysis.
+
+The language of the request, the surrounding conversation, or a filename is not
+an explicit choice of document language. Only a direct request about the
+generated report or other artifact changes the default. Conversational replies
+may follow the requester's language while generated artifacts remain English.
+
+Create the case even when details are partial, and record assumptions instead of
+inventing authorization. If the requester explicitly chooses another language,
+use it consistently for the human-readable report and record that choice in the
+Scope and Authorization section.
 
 ## Workflow
 
@@ -72,22 +90,37 @@ partial, and record assumptions instead of inventing authorization.
    sensitive attribute, private contact detail, precise location, or private
    content.
 
-4. Compare candidates using the evidence and confidence rules in
+4. Extract distinctive identity-bearing leads from reviewed profiles, such as an
+   unusual exact display name, public project or domain, reciprocal profile link,
+   or explicitly stated alias. Before following them, read
+   [references/pivot-discovery.md](references/pivot-discovery.md). Search those
+   leads through modest public checks and add any new profiles as separate
+   candidates. The default budget is two derived rounds and 12 lead checks;
+   record every query, result, rejection, and blocked check.
+
+5. Do not use a pivot as evidence for itself. A display name or other clue can
+   connect candidates for review, but same-person linkage still requires direct,
+   non-generic evidence. Do not propagate weak evidence transitively between
+   accounts that share different clues.
+
+6. Compare candidates using the evidence and confidence rules in
    [references/identity-verification.md](references/identity-verification.md).
    A shared username alone is weak evidence. Do not claim that accounts belong
    to one person unless the evidence meets the documented threshold.
 
-5. Complete every section of `username_analysis.md`. Separate observable facts
-   from inferences and keep source IDs attached to claims. Use neutral,
-   non-stigmatizing language. Include contradictions and failed checks, not
-   only convenient matches.
+7. Consolidate the result into evidence-based clusters plus explicitly
+   unassigned candidates. Complete every section of `username_analysis.md`,
+   including the Iterative Discovery log and Integrated Account Map. Separate
+   observable facts from inferences and keep source IDs attached to claims. Use
+   neutral, non-stigmatizing language. Include contradictions, dead ends, and
+   failed checks, not only convenient matches.
 
-6. Describe login-required gaps by information category. Legitimate routes are
+8. Describe login-required gaps by information category. Legitimate routes are
    an account owner's authorized export or interview and, where applicable, a
    platform's legal process. Never ask for passwords, session cookies, recovery
    codes, or one-time codes.
 
-7. Validate the completed report:
+9. Validate the completed report:
 
    ```bash
    python <skill-dir>/scripts/username_analysis.py validate \
@@ -99,11 +132,17 @@ partial, and record assumptions instead of inventing authorization.
 ## Quality bar
 
 - Find links vs. same-person linkage are distinct conclusions.
+- Every followed clue has an origin, source, search round, outcome, and stop
+  reason; generic or private clues were not used for expansion.
 - Every material claim has a source, an access date, and a confidence level.
 - At least one cross-platform, unique overlap is required for a `Likely`
   same-person conclusion.
+- The final map assigns accounts only through direct evidence and leaves
+  ambiguous candidates unassigned.
 - Missing, stale, blocked, or login-gated evidence is reported as a limitation.
 - The final report answers the original question without adding unnecessary
   identifying detail.
+- Every human-readable deliverable follows the English-by-default language
+  contract unless the requester explicitly chose another language.
 - Outputs stay inside `username_analysis/` unless the user requests another
   location.

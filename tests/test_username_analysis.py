@@ -73,7 +73,11 @@ class UsernameAnalysisTests(unittest.TestCase):
             self.assertTrue(report_path.exists())
             self.assertIn('"candidate_count": 1', evidence)
             self.assertIn("https://codeforces.com/profile/example_user", evidence)
-            self.assertIn("{{PURPOSE}}", report_path.read_text(encoding="utf-8"))
+            report_text = report_path.read_text(encoding="utf-8")
+            self.assertIn("{{PURPOSE}}", report_text)
+            self.assertIn("{{PIVOT_LEADS_TABLE}}", report_text)
+            self.assertIn("## Iterative Discovery", report_text)
+            self.assertIn("## Integrated Account Map", report_text)
 
             errors, _ = username_analysis.validate_report(report_path)
             self.assertTrue(any("Unresolved placeholders" in error for error in errors))
@@ -126,7 +130,14 @@ class UsernameAnalysisTests(unittest.TestCase):
                 (case_dir / "evidence.json").read_text(encoding="utf-8")
             )
             self.assertEqual(evidence["source_mode"], "embedded")
+            self.assertEqual(evidence["schema_version"], 2)
             self.assertEqual(evidence["summary"]["candidate_count"], 1)
+            self.assertEqual(
+                evidence["discovery"]["strategy"], "bounded_public_pivots"
+            )
+            self.assertEqual(evidence["discovery"]["rounds"][0]["round"], 1)
+            self.assertEqual(evidence["discovery"]["candidates"], [])
+            self.assertEqual(evidence["discovery"]["leads"], [])
             self.assertTrue((case_dir / "sherlock-scan.json").exists())
 
     def test_bundled_sites_are_valid(self) -> None:
@@ -144,6 +155,12 @@ class UsernameAnalysisTests(unittest.TestCase):
         self.assertEqual(manifest["name"], "sherlock-skill")
         self.assertEqual(manifest["runtime"]["dependencies"], [])
         self.assertFalse(manifest["authentication"]["required"])
+        self.assertEqual(manifest["output"]["default_language"], "English")
+        self.assertTrue(manifest["output"]["change_requires_explicit_request"])
+        self.assertFalse(
+            manifest["output"]["conversation_language_is_artifact_language"]
+        )
+        self.assertTrue((ROOT / manifest["output"]["report_template"]).exists())
         for relative_path in manifest["instructions"].values():
             self.assertTrue((ROOT / relative_path).exists())
         for entrypoint in manifest["entrypoints"].values():
@@ -206,7 +223,19 @@ class UsernameAnalysisTests(unittest.TestCase):
                 "PURPOSE": "Authorized public-source check.",
                 "AUTHORIZATION": "Requester confirmed authorization.",
                 "EXECUTIVE_ASSESSMENT": "No candidate accounts were found.",
+                "PIVOT_LEADS_TABLE": (
+                    "| - | - | No distinctive public lead | - | - | - | "
+                    "Exhausted | - |"
+                ),
+                "PIVOT_ROUNDS_TABLE": (
+                    "| 1 | Initial username | Bundled site scan | No candidates | "
+                    "Stop; no lead | - |"
+                ),
                 "CROSS_PLATFORM_TABLE": "No cross-platform comparison was possible.",
+                "INTEGRATED_MAP_TABLE": (
+                    "| No accounts | None | Inconclusive | Low | No candidates "
+                    "found | Failed checks only |"
+                ),
                 "GROUPED_ACCOUNTS": "None.",
                 "DECISIVE_EVIDENCE": "None.",
                 "MISSING_OR_CONTRADICTORY_EVIDENCE": "No accounts were found.",
@@ -231,6 +260,23 @@ class UsernameAnalysisTests(unittest.TestCase):
             self.assertIsNone(
                 re.search(r"\{\{[A-Z0-9_]+\}\}", report_path.read_text(encoding="utf-8"))
             )
+
+    def test_validation_requires_pivot_and_integration_sections(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            report = (
+                "# Username Analysis\n\n"
+                "- **Conclusion:** Inconclusive\n"
+                "- **Confidence:** Low\n\n"
+                "## Sources\n\n"
+                "| ID | URL |\n| --- | --- |\n| S1 | https://example.com |\n"
+            )
+            report_path = Path(temp_dir) / "username_analysis.md"
+            report_path.write_text(report, encoding="utf-8")
+
+            errors, _ = username_analysis.validate_report(report_path)
+
+            self.assertIn("Missing required heading: ## Iterative Discovery", errors)
+            self.assertIn("Missing required heading: ## Integrated Account Map", errors)
 
 
 if __name__ == "__main__":

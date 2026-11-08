@@ -1,11 +1,18 @@
 {
   "name": "sherlock-skill",
-  "version": "0.3.0",
-  "description": "Agent-neutral public username discovery, account linkage verification, and report generation.",
+  "version": "0.4.1",
+  "description": "Agent-neutral public username discovery with bounded pivot rounds, account linkage verification, and integrated report generation.",
   "instructions": {
     "skill": "SKILL.md",
     "agents": "AGENTS.md",
-    "identity_rules": "references/identity-verification.md"
+    "identity_rules": "references/identity-verification.md",
+    "pivot_rules": "references/pivot-discovery.md"
+  },
+  "output": {
+    "default_language": "English",
+    "change_requires_explicit_request": true,
+    "conversation_language_is_artifact_language": false,
+    "report_template": "assets/report_template.md"
   },
   "runtime": {
     "language": "python",
@@ -49,7 +56,7 @@
       "required_arguments": [
         "--username"
       ],
-      "output": "username_analysis/<safe-username>/ with Markdown, evidence, and scan files"
+      "output": "username_analysis/<safe-username>/ with English Markdown by default, evidence, and scan files"
     },
     "validate_report": {
       "command": [
