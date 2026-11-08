@@ -193,6 +193,7 @@ documented public-source and privacy boundaries.
 - [Programmatic manifest](agent-manifest.json)
 - [Identity verification](references/identity-verification.md)
 - [Bounded pivot discovery](references/pivot-discovery.md)
+- [Technical note: discovery is not identity verification](docs/articles/username-search-is-not-identity-verification.md)
 
 ## License
 

@@ -180,6 +180,7 @@ python scripts/sherlock_scan.py validate-data
 - [程序化清单](agent-manifest.json)
 - [身份核验规则](references/identity-verification.md)
 - [有限线索追踪](references/pivot-discovery.md)
+- [技术文章：发现线索不等于身份确认](docs/articles/username-search-is-not-identity-verification.md)
 
 ## 许可证
 
