@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.58" stop-color="#0b1b31"/>
+      <stop offset="1" stop-color="#102a43"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38d9a9"/>
+      <stop offset="1" stop-color="#63a4ff"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#38d9a9" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#38d9a9" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#b8c7da" stroke-opacity="0.045"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+  <circle cx="150" cy="40" r="260" fill="url(#glow)"/>
+  <circle cx="1170" cy="620" r="300" fill="url(#glow)" opacity="0.55"/>
+
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="74" y="84" fill="#38d9a9" font-size="18" font-weight="700" letter-spacing="3.2">PUBLIC-SOURCE RESEARCH FOR AI AGENTS</text>
+
+    <text x="72" y="190" fill="#f7fbff" font-size="76" font-weight="750" letter-spacing="-2.4">Sherlock Skill</text>
+    <text x="74" y="248" fill="#c8d5e5" font-size="29" font-weight="400">Turn username-search hits into</text>
+    <text x="74" y="288" fill="#c8d5e5" font-size="29" font-weight="400">evidence-backed, reviewable reports.</text>
+
+    <rect x="74" y="329" width="609" height="66" rx="12" fill="#071421" stroke="#24425f"/>
+    <text x="98" y="370" fill="#7de2c0" font-family="Consolas, monospace" font-size="24" font-weight="700">account exists</text>
+    <text x="308" y="371" fill="#7f94ab" font-family="Segoe UI, Arial, sans-serif" font-size="25">≠</text>
+    <text x="347" y="370" fill="#8ab7ff" font-family="Consolas, monospace" font-size="24" font-weight="700">same person</text>
+
+    <g font-size="17" font-weight="650">
+      <rect x="74" y="429" width="172" height="42" rx="21" fill="#0d2435" stroke="#2b6c61"/>
+      <text x="104" y="456" fill="#8ce8ca">Evidence tiers</text>
+      <rect x="260" y="429" width="174" height="42" rx="21" fill="#0d2435" stroke="#315b86"/>
+      <text x="291" y="456" fill="#9bc6ff">Bounded pivots</text>
+      <rect x="448" y="429" width="160" height="42" rx="21" fill="#0d2435" stroke="#405477"/>
+      <text x="481" y="456" fill="#c4d2e9">Local scanner</text>
+    </g>
+
+    <text x="74" y="576" fill="#7f94ab" font-size="18" font-weight="500">github.com/milddrunker/sherlock-skill</text>
+    <text x="74" y="606" fill="#526b83" font-size="15">MIT licensed  •  Python 3.10+  •  zero runtime dependencies</text>
+
+    <g transform="translate(754 96)" filter="url(#shadow)">
+      <rect width="452" height="448" rx="22" fill="#091727" stroke="#28435e"/>
+      <rect x="0" y="0" width="452" height="58" rx="22" fill="#0f2438"/>
+      <rect x="0" y="36" width="452" height="22" fill="#0f2438"/>
+      <circle cx="28" cy="29" r="6" fill="#38d9a9"/>
+      <text x="46" y="36" fill="#dce9f7" font-size="16" font-weight="700">ANALYSIS REPORT</text>
+      <text x="365" y="36" fill="#6f8aa4" font-family="Consolas, monospace" font-size="14">VALIDATED</text>
+
+      <text x="28" y="93" fill="#7891a9" font-size="13" font-weight="700" letter-spacing="1.5">EVIDENCE MAP</text>
+      <line x1="28" y1="111" x2="424" y2="111" stroke="#223b53"/>
+
+      <g font-size="15">
+        <rect x="28" y="132" width="396" height="58" rx="10" fill="#0d2032" stroke="#1d3b55"/>
+        <circle cx="49" cy="161" r="6" fill="#38d9a9"/>
+        <text x="66" y="157" fill="#e6f0fa" font-weight="650">Public source</text>
+        <text x="66" y="177" fill="#718ba3">Observed, dated, and cited</text>
+        <text x="339" y="167" fill="#38d9a9" font-size="12" font-weight="700">SOURCE</text>
+
+        <rect x="28" y="202" width="396" height="58" rx="10" fill="#0d2032" stroke="#1d3b55"/>
+        <circle cx="49" cy="231" r="6" fill="#ffd166"/>
+        <text x="66" y="227" fill="#e6f0fa" font-weight="650">Weak overlap</text>
+        <text x="66" y="247" fill="#718ba3">Shared handle is not ownership</text>
+        <text x="339" y="237" fill="#ffd166" font-size="12" font-weight="700">LEAD</text>
+
+        <rect x="28" y="272" width="396" height="58" rx="10" fill="#0d2032" stroke="#1d3b55"/>
+        <circle cx="49" cy="301" r="6" fill="#ff7d8d"/>
+        <text x="66" y="297" fill="#e6f0fa" font-weight="650">Blocked page</text>
+        <text x="66" y="317" fill="#718ba3">Recorded as a coverage limit</text>
+        <text x="336" y="307" fill="#ff9ca8" font-size="12" font-weight="700">UNKNOWN</text>
+      </g>
+
+      <rect x="28" y="354" width="396" height="62" rx="12" fill="#0b2c2b" stroke="#2f7469"/>
+      <text x="48" y="381" fill="#7b9ab0" font-size="12" font-weight="700" letter-spacing="1.3">CONCLUSION</text>
+      <text x="48" y="404" fill="#8ce8ca" font-size="18" font-weight="750">Inconclusive</text>
+      <text x="359" y="394" fill="#7b9ab0" font-size="12" font-weight="700">CONFIDENCE</text>
+      <text x="393" y="414" fill="#d7e5f3" font-size="15" font-weight="700">Low</text>
+    </g>
+  </g>
+</svg>

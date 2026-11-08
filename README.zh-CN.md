@@ -2,8 +2,13 @@
 
 # Sherlock Skill
 
+<p align="center">
+  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — 有证据支持的用户名调查" width="100%">
+</p>
+
 **把用户名搜索线索整理成有证据、可复核的调查报告。**
 
+[![CI](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Runtime dependencies: 0](https://img.shields.io/badge/runtime_dependencies-0-brightgreen.svg)](#前置条件)
