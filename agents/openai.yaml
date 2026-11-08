@@ -1,0 +1,10 @@
+interface:
+  display_name: "Sherlock Skill"
+  short_description: "Evidence-backed public username research for agents"
+  icon_small: "./assets/sherlock-icon-400.png"
+  icon_large: "./assets/sherlock-icon.svg"
+  brand_color: "#38D9A9"
+  default_prompt: "Use $sherlock-skill to investigate an authorized username research request and produce a validated public-source report."
+
+policy:
+  allow_implicit_invocation: true
