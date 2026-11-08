@@ -8,6 +8,11 @@ description: Investigate a username across public sites with a bundled scanner a
 Turn a username into an evidence-backed public-account map without treating
 same-name accounts as the same person.
 
+This skill is portable across agent hosts: instructions are in this file and
+[`AGENTS.md`](AGENTS.md), while [`agent-manifest.json`](agent-manifest.json)
+describes the command interface. Do not depend on host-specific plugins or an
+external Sherlock installation.
+
 ## Eligibility and boundaries
 
 Use this workflow for authorized security assessments, personal profile

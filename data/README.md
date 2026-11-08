@@ -10,8 +10,8 @@
   [`LICENSES/SHERLOCK-MIT.txt`](../LICENSES/SHERLOCK-MIT.txt)
 
 The bundled snapshot makes scans reproducible and removes the runtime
-`pipx install sherlock-project` dependency. It also means new or changed
-upstream sites are not picked up automatically.
+external-package dependency. It also means new or changed upstream sites are
+not picked up automatically.
 
 Validate the snapshot:
 

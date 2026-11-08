@@ -57,8 +57,9 @@ inferences.
 
 ## Requirements
 
-- Codex with skills enabled
 - Python 3.10 or newer
+- Any agent that can execute the CLI or read `SKILL.md` / `AGENTS.md`
+- Network access to target sites
 
 No `pipx` or external `sherlock` installation is required. Validate the bundled
 site snapshot:
@@ -73,12 +74,12 @@ that limitation when fresh coverage matters.
 
 ## Install the skill
 
-Clone this repository directly into your Codex skills directory.
+Clone the repository anywhere; there is no package installation step.
 
 PowerShell:
 
 ```powershell
-$target = Join-Path $HOME '.codex\skills\sherlock-skill'
+$target = Join-Path $HOME 'sherlock-skill'
 git clone https://github.com/milddrunker/sherlock-skill.git $target
 ```
 
@@ -86,22 +87,27 @@ macOS or Linux:
 
 ```bash
 git clone https://github.com/milddrunker/sherlock-skill.git \
-  "${CODEX_HOME:-$HOME/.codex}/skills/sherlock-skill"
+  "$HOME/sherlock-skill"
 ```
 
-Restart or refresh Codex if the skill is not discovered immediately.
+For a skill-aware host, place or symlink this directory in that host's skills
+directory and load `SKILL.md`. For a command-driven agent, point it to
+`AGENTS.md` or `agent-manifest.json`. The CLI works independently of either
+integration.
 
-## Use with Codex
+## Use with any agent
 
-Invoke the skill by name and state the research purpose and scope:
+Give the agent the repository path and state the research purpose and scope:
 
 ```text
-Use $sherlock-skill to research the username "example_user" for an
-authorized brand-impersonation review. Create the report in this workspace.
+Read /path/to/sherlock-skill/SKILL.md and use its embedded scanner to research
+the username "example_user" for an authorized brand-impersonation review.
+Create the report in this workspace.
 ```
 
-Codex will run the embedded scanner, inspect public pages, verify linkage,
-complete the report, and run the validator.
+The agent will run the local scanner, inspect public pages, verify linkage,
+complete the report, and run the validator. Hosts that support skill-name
+invocation can also expose the directory as `sherlock-skill`.
 
 ## Use the helper directly
 

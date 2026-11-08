@@ -136,6 +136,21 @@ class UsernameAnalysisTests(unittest.TestCase):
         self.assertIn("GitHub", sites)
         self.assertIn("url", sites["GitHub"])
 
+    def test_agent_manifest_is_self_contained(self) -> None:
+        manifest = json.loads(
+            (ROOT / "agent-manifest.json").read_text(encoding="utf-8")
+        )
+
+        self.assertEqual(manifest["name"], "sherlock-skill")
+        self.assertEqual(manifest["runtime"]["dependencies"], [])
+        self.assertFalse(manifest["authentication"]["required"])
+        for relative_path in manifest["instructions"].values():
+            self.assertTrue((ROOT / relative_path).exists())
+        for entrypoint in manifest["entrypoints"].values():
+            command = entrypoint["command"]
+            script_path = ROOT / command[1]
+            self.assertTrue(script_path.exists())
+
     def test_classification_message_rule(self) -> None:
         site = {
             "errorType": "message",

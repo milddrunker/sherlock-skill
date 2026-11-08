@@ -52,8 +52,9 @@ skill 指令和默认报告语言均为英文。
 
 ## 前置条件
 
-- 已启用 skills 的 Codex
 - Python 3.10 或更高版本
+- 能执行 CLI 或读取 `SKILL.md` / `AGENTS.md` 的任意 agent
+- 可访问目标站点的网络
 
 不需要通过 `pipx` 或外部命令安装 Sherlock。验证内置站点快照：
 
@@ -66,12 +67,12 @@ python scripts/sherlock_scan.py validate-data
 
 ## 安装 skill
 
-直接把仓库克隆到 Codex skills 目录。
+仓库可以克隆到任意位置，不需要安装任何 Python 包。
 
 PowerShell：
 
 ```powershell
-$target = Join-Path $HOME '.codex\skills\sherlock-skill'
+$target = Join-Path $HOME 'sherlock-skill'
 git clone https://github.com/milddrunker/sherlock-skill.git $target
 ```
 
@@ -79,21 +80,23 @@ macOS 或 Linux：
 
 ```bash
 git clone https://github.com/milddrunker/sherlock-skill.git \
-  "${CODEX_HOME:-$HOME/.codex}/skills/sherlock-skill"
+  "$HOME/sherlock-skill"
 ```
 
-如果 Codex 没有立即发现 skill，请重启或刷新 Codex。
+支持 skill 的宿主可以把该目录放入或链接到自己的 skills 目录，并读取
+`SKILL.md`。命令驱动的 agent 可以读取 `AGENTS.md` 或
+`agent-manifest.json`。两种集成方式都不影响 CLI 独立运行。
 
-## 在 Codex 中使用
+## 配合任意 agent 使用
 
-调用时说明调查目的和授权范围：
+把仓库路径交给 agent，并说明调查目的和授权范围：
 
 ```text
-使用 $sherlock-skill 调查用户名 "example_user"，用于经授权的品牌冒用
-分析，并在当前工作区生成报告。
+读取 /path/to/sherlock-skill/SKILL.md，使用其中的内置扫描器调查用户名
+"example_user"，用于经授权的品牌冒用分析，并在当前工作区生成报告。
 ```
 
-Codex 会运行内置扫描器，查看公开页面，核验账号关联，完成报告并运行
+Agent 会运行本地扫描器，查看公开页面，核验账号关联，完成报告并运行
 校验器。
 
 ## 直接使用辅助脚本
