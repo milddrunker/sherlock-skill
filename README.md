@@ -3,31 +3,38 @@
 # Sherlock Skill
 
 <p align="center">
-  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — public social footprint, evidence-checked connections, and behavioral profile" width="100%">
+  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — multi-platform public social footprint and behavioral insight for security, brand protection, and privacy self-audits" width="100%">
 </p>
 
-**Find as much of a person's publicly discoverable social footprint as
-possible, connect accounts with evidence, and turn public activity into an
-auditable behavioral profile.**
+**Turn one username into a wider public social footprint—and an evidence-backed
+picture of how that person shows up online.**
 
 [![CI](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Runtime dependencies: 0](https://img.shields.io/badge/runtime_dependencies-0-brightgreen.svg)](#requirements)
 
-Sherlock Skill is a public-source research workflow for security researchers,
-brand-protection teams, and AI agents. Starting from one username, it scans a
-bundled 481-site snapshot across social, developer, creator, gaming, marketplace,
-and community platforms. It then follows distinctive public clues through
-bounded discovery rounds, verifies which accounts have evidence of belonging
-together, and synthesizes their public activity into a behavioral profile.
+Sherlock Skill is for people who need the bigger picture behind a username:
+security researchers, brand-protection teams, privacy-conscious individuals,
+and teams building AI agents. It scans public social, video, community, creator,
+marketplace, and developer platforms, follows distinctive clues through bounded
+discovery rounds, and connects only the accounts supported by evidence.
+
+## Who it is for
+
+| User | What they need | What Sherlock Skill provides |
+|---|---|---|
+| Security researchers | A wider public footprint without drowning in raw matches | Cross-platform account discovery, evidence-checked connections, and source-backed behavioral patterns |
+| Brand-protection teams | A faster way to find linked impersonation or lookalike profiles | Related public accounts, identity signals, contradictions, and a reviewable report |
+| Privacy-conscious individuals | A clear view of what their username exposes publicly | A self-audit of related profiles, visibility risks, and cleanup priorities |
+| Agent builders | A portable research workflow with predictable output | A zero-dependency scanner, JSON results, and a validated Markdown report |
 
 Instead of stopping at **"does this handle appear on a site?"**, the workflow
 answers:
 
-> What publicly discoverable social media presence exists for this person,
-> which accounts can responsibly be grouped together, and what patterns do
-> their public activities reveal?
+> What public social accounts can this person be connected to, which profiles
+> actually belong together, and what do their interests, communities, and
+> activity patterns say about their public behavior?
 
 **Coverage note:** the goal is to find as many publicly discoverable accounts as
 possible, not to guarantee exhaustive coverage. Private, login-gated, deleted,

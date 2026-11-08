@@ -3,26 +3,35 @@
 # Sherlock Skill
 
 <p align="center">
-  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — 公开社交媒体足迹、证据核验与行为画像" width="100%">
+  <img src=".github/assets/social-preview.svg" alt="Sherlock Skill — 面向安全研究、品牌保护和个人隐私自查的跨平台社交媒体足迹与行为洞察" width="100%">
 </p>
 
-**从一个用户名出发，尽可能发现一个人的公开社交媒体足迹，用证据串联账号，
-并把公开活动整理成可审计的行为画像。**
+**从一个用户名出发，看到一个更完整的公开社交媒体足迹，并理解这个人在网上
+呈现出怎样的兴趣、社区和行为模式。**
 
 [![CI](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/milddrunker/sherlock-skill/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Runtime dependencies: 0](https://img.shields.io/badge/runtime_dependencies-0-brightgreen.svg)](#前置条件)
 
-Sherlock Skill 面向安全研究人员、品牌保护团队和 AI Agent，提供一套公开信息
-调查工作流。它从一个用户名出发，扫描内置的 481 个站点快照，覆盖社交、开发者、
-创作、游戏、交易和社区平台；再通过有限轮次追踪独特的公开线索，核验哪些账号有
-证据支持属于同一个人，并将公开活动整合成行为画像。
+Sherlock Skill 面向需要回答“这个用户名背后还有哪些公开信息”的用户，包括安全
+研究人员、品牌保护团队、关注隐私的普通用户，以及构建 AI Agent 的开发者。它会
+扫描公开的社交、视频、社区、创作、交易和开发者平台，通过有限轮次追踪独特线索，
+只把有证据支持的账号关联起来。
+
+## 适合谁使用
+
+| 用户 | 需要解决的问题 | Sherlock Skill 提供什么 |
+|---|---|---|
+| 安全研究人员 | 希望看清更完整的公开足迹，而不是面对大量原始匹配链接 | 跨平台账号发现、有证据的账号关联，以及带来源的行为模式总结 |
+| 品牌保护团队 | 希望更快找到关联的冒用账号或仿冒资料 | 相关公开账号、身份信号、矛盾点和可复核报告 |
+| 关注隐私的个人 | 想知道用户名公开暴露了哪些账号和个人信息 | 对相关公开资料的自查、暴露风险与清理优先级 |
+| Agent 开发者 | 需要可移植、输出稳定的公开信息调查工作流 | 零依赖扫描器、JSON 结果和经过校验的 Markdown 报告 |
 
 它不只回答“这个账号名是否出现在某个站点”，还进一步处理：
 
-> 这个人在公开互联网上有哪些社交媒体存在？哪些账号可以被负责任地归为同一人？
-> 这些公开活动呈现出怎样的兴趣、社区参与和行为模式？
+> 这个用户名能关联到哪些公开社交账号？哪些资料确实属于同一个人？他们的兴趣、
+> 社区参与和活动节奏呈现出怎样的公开行为模式？
 
 **覆盖说明：** 目标是尽可能发现公开可查的账号，而不是承诺找到互联网上的全部
 账号。私密、需要登录、已删除、被拦截、未被索引或使用其他用户名的账号，
