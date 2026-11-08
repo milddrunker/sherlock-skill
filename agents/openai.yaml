@@ -1,0 +1,4 @@
+interface:
+  display_name: "Username Analysis Workflow"
+  short_description: "Map and verify public username profiles"
+  default_prompt: "Use $username-analysis-skill to investigate one username and generate a verified public-source report."
